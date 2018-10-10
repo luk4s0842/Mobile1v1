@@ -33,12 +33,12 @@ public class PlayerMovement : NetworkBehaviour {
         transform.Translate(x, 0, 0);
 
 
-        if(rightDoubleClickTime >= 0){
+        if(rightDoubleClickTime > 0){
             rightDoubleClickTime -= Time.deltaTime;
         } else {
             rightDoubleClickTime = 0;
         }
-        if (leftDoubleClickTime >= 0) {
+        if (leftDoubleClickTime > 0) {
             leftDoubleClickTime -= Time.deltaTime;
         } else {
             leftDoubleClickTime = 0;
@@ -47,13 +47,13 @@ public class PlayerMovement : NetworkBehaviour {
         if (direction == 0) {
             if (Input.GetKeyDown(KeyCode.A)) {
                 if (leftDoubleClickTime > 0) {
-                    direction = 1;
+                    direction = -1;
                 } else {
                     leftDoubleClickTime += doubleClickWaitingTime;
                 }
             } else if (Input.GetKeyDown(KeyCode.D)) {
                 if (rightDoubleClickTime > 0) {
-                    direction = 2;
+                    direction = 1;
                 } else {
                     rightDoubleClickTime += doubleClickWaitingTime;
                 }
@@ -65,12 +65,8 @@ public class PlayerMovement : NetworkBehaviour {
                 rb.velocity = Vector2.zero;
             } else {
                 dashTime -= Time.deltaTime;
-
-                if(direction == 1){
-                    rb.velocity = Vector2.left * dashSpeed;
-                } else if (direction == 2){
-                    rb.velocity = Vector2.right * dashSpeed;
-                }
+                rb.velocity = direction * Vector2.right * dashSpeed;
+            
             }
         }
 	}
